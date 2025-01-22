@@ -8,7 +8,7 @@ This application helps users to manage their tasks efficiently by combining time
 
 #
 
-*Key Features :*
+**Key Features :**
 
 -Motivational Quotes: Curated quote library categorized by themes (e.g., productivity, perseverance, positivity).
 
