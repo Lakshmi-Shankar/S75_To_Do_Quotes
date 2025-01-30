@@ -1,0 +1,15 @@
+{
+  "name": "s75_to_do_quotes",
+  "version": "1.0.0",
+  "description": "**Project Overview :**",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
