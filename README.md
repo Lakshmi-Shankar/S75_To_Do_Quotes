@@ -37,3 +37,6 @@ As for the DataBase this application uses MySQL.
 The reason I have choosen this project is to make people more aware of time management and goal setting. Because I have also been tring to set goals and maintain my time but most of the time I either miss the time or dont have the motivation to do the task.
 
 In a world where distractions abound, managing time and staying motivated can be challenging. This project addresses these challenges by combining time management tools with motivational support, helping users to stay focused and energized. By integrating timers and personalized quotes, this app provides both the structure and encouragement needed to accomplish tasks effectively.
+
+
+Deployment Link - https://todo-quotes.netlify.app/
