@@ -4,6 +4,7 @@
   "description": "**Project Overview :**",
   "main": "index.js",
   "scripts": {
+    "build": "react-scripts build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,7 +13,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mongoose": "^8.10.1"
+    "mongoose": "^8.10.1",
+    "react-scripts": "^5.0.1"
   },
   "keywords": []
 }
