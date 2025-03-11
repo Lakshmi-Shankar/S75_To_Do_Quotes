@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 
-let items = [{ id: 1, name: "Shankar" }];
+let items = [{ id: 1, name: "Lakshmi Shankar" }];
 
 
 router.post("/items", (req, res) => {
