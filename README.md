@@ -39,4 +39,4 @@ The reason I have choosen this project is to make people more aware of time mana
 In a world where distractions abound, managing time and staying motivated can be challenging. This project addresses these challenges by combining time management tools with motivational support, helping users to stay focused and energized. By integrating timers and personalized quotes, this app provides both the structure and encouragement needed to accomplish tasks effectively.
 
 
-Deployment Link - https://todo-quotes.netlify.app/
+Deployment Link - https://s75-to-do-quotes-01.onrender.com
