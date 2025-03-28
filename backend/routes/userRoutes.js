@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const User = require('./model/user')
+const User = require('../model/user')
 
 
-router.post('/register', (req, res) => {
+router.post('/register', async(req, res) => {
     const { name, email, password } = req.body;
 
     if (!name) {
@@ -19,6 +19,10 @@ router.post('/register', (req, res) => {
         return res.status(400).json({ error: "Password must be at least 6 characters long" });
     }
 
+    const newUser = new User({
+      name,email,password
+    })
+    await newUser.save()
     res.json({ message: "User registered successfully" });
 });
 
@@ -69,29 +73,6 @@ router.delete("/:id", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error deleting user", error });
   }
-});
-
-
-// TASK
-
-router.post('/tasks', (req, res) => {
-  const { title, status, priority } = req.body;
-
-  if (!title) {
-      return res.status(400).json({ error: "Title is required" });
-  }
-
-  const validStatuses = ['pending', 'in-progress', 'completed'];
-  if (!validStatuses.includes(status)) {
-      return res.status(400).json({ error: "Invalid status" });
-  }
-
-  const validPriorities = ['low', 'medium', 'high'];
-  if (!validPriorities.includes(priority)) {
-      return res.status(400).json({ error: "Invalid priority" });
-  }
-
-  res.json({ message: "Task created successfully" });
 });
 
 
