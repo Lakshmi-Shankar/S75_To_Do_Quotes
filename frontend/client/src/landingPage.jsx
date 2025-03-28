@@ -5,11 +5,12 @@ const LandingPage = ({projectName}) => {
     const [entity, setEntity] = useState([]);
     const fetchData = async() =>{
         try{
-            const response = await fetch("http://localhost:3000/api/items");
+            const response = await fetch("http://localhost:3000/api/");
             if (!response.ok){
                 console.log("Error")
             }
             const data = await response.json();
+            console.log(data)
             setEntity(data)
         }
         catch{
