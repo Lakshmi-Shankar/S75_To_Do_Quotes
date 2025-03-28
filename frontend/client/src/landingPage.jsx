@@ -34,7 +34,7 @@ const LandingPage = ({projectName}) => {
             </p>
             <h2>Entities from the DB</h2>
             <button onClick={fetchData}>Fetch Data</button>
-            <p>
+            <div>
                 {
                     entity.map((item,i)=>(
                         <div key={i}>
@@ -44,7 +44,7 @@ const LandingPage = ({projectName}) => {
                         
                     ))
                 }
-            </p>
+            </div>
         </div>
     );
 }
