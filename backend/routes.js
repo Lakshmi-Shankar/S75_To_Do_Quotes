@@ -1,72 +1,98 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const User = require('./model/user')
 
-// Define Mongoose Schema
-const itemSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true },
-}, { timestamps: true });
 
-const Item = mongoose.model("Item", itemSchema);
+router.post('/register', (req, res) => {
+    const { name, email, password } = req.body;
 
-// Create Item (POST)
-router.post("/items", async (req, res) => {
-  const { name } = req.body;
-  if (!name) return res.status(400).json({ message: "Name is required" });
+    if (!name) {
+        return res.status(400).json({ error: "Name is required" });
+    }
 
+    if (!email || !email.includes('@')) {
+        return res.status(400).json({ error: "Invalid email format" });
+    }
+
+    if (!password || password.length < 6) {
+        return res.status(400).json({ error: "Password must be at least 6 characters long" });
+    }
+
+    res.json({ message: "User registered successfully" });
+});
+
+
+
+
+// ✅ **Get All Users (GET)**
+router.get("/", async (req, res) => {
   try {
-    const newItem = new Item({ name });
-    await newItem.save();
-    res.status(201).json(newItem);
+    const users = await User.find();
+    res.json(users);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
+    res.status(500).json({ message: "Error fetching users", error });
   }
 });
 
-// Get All Items (GET)
-router.get("/items", async (req, res) => {
+// ✅ **Get Single User by ID (GET)**
+router.get("/:id", async (req, res) => {
   try {
-    const items = await Item.find();
-    res.json(items);
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json(user);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
+    res.status(500).json({ message: "Error fetching user", error });
   }
 });
 
-// Get Single Item by ID (GET)
-router.get("/items/:id", async (req, res) => {
+// ✅ **Update User (PUT)**
+router.put("/:id", async (req, res) => {
   try {
-    const item = await Item.findById(req.params.id);
-    if (!item) return res.status(404).json({ message: "Item not found" });
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
 
-    res.json(item);
+    res.json(updatedUser);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
+    res.status(500).json({ message: "Error updating user", error });
   }
 });
 
-// Update Item (PUT)
-router.put("/items/:id", async (req, res) => {
+// ✅ **Delete User (DELETE)**
+router.delete("/:id", async (req, res) => {
   try {
-    const updatedItem = await Item.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
-    if (!updatedItem) return res.status(404).json({ message: "Item not found" });
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (!deletedUser) return res.status(404).json({ message: "User not found" });
 
-    res.json({ message: "Item updated successfully", updatedItem });
+    res.json({ message: "User deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
+    res.status(500).json({ message: "Error deleting user", error });
   }
 });
 
-// Delete Item (DELETE)
-router.delete("/items/:id", async (req, res) => {
-  try {
-    const deletedItem = await Item.findByIdAndDelete(req.params.id);
-    if (!deletedItem) return res.status(404).json({ message: "Item not found" });
 
-    res.json({ message: "Item deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
+// TASK
+
+router.post('/tasks', (req, res) => {
+  const { title, status, priority } = req.body;
+
+  if (!title) {
+      return res.status(400).json({ error: "Title is required" });
   }
+
+  const validStatuses = ['pending', 'in-progress', 'completed'];
+  if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+  }
+
+  const validPriorities = ['low', 'medium', 'high'];
+  if (!validPriorities.includes(priority)) {
+      return res.status(400).json({ error: "Invalid priority" });
+  }
+
+  res.json({ message: "Task created successfully" });
 });
+
 
 module.exports = router;
