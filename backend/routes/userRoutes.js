@@ -126,7 +126,7 @@ router.post("/login", async (req, res) => {
 
 //  LOGOUT
 router.post("/logout", (req, res) => {
-  res.clearCookie("username");
+  res.clearCookie("Token");
   res.status(200).json({ message: "Logout successful" });
 });
 
