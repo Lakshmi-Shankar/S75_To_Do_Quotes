@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const User = require('../model/user')
 const bcrypt = require("bcrypt"); // Use this if you hash passwords
 const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const SECRET_KEY = process.env.SECRET_KEY;
 
 
 router.post('/register', async(req, res) => {
@@ -80,7 +83,7 @@ router.delete("/:id", async (req, res) => {
 
 
 
-// ✅ LOGIN
+//  LOGIN
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -96,16 +99,22 @@ router.post("/login", async (req, res) => {
           return res.status(404).json({ error: "User not found" });
       }
 
-      // For plain-text passwords only (not recommended)
+      // For plain-text passwords only
       if (user.password !== password) {
           return res.status(401).json({ error: "Invalid credentials" });
       }
 
+      const payload = {
+        username: user.email
+      }
+
+      const token = jwt.sign(payload, SECRET_KEY, {expiresIn: "1h"});
+
       // Set cookie
-      res.cookie("username", user.name, {
+      res.cookie("Token", token, {
           httpOnly: true,
           sameSite: "strict",
-          secure: false, // true in production with HTTPS
+          secure: false,
       });
 
       res.status(200).json({ message: "Login successful" });
@@ -115,7 +124,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ✅ LOGOUT
+//  LOGOUT
 router.post("/logout", (req, res) => {
   res.clearCookie("username");
   res.status(200).json({ message: "Logout successful" });
