@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const User = require('../model/user')
+const bcrypt = require("bcrypt"); // Use this if you hash passwords
+const cookieParser = require("cookie-parser");
 
 
 router.post('/register', async(req, res) => {
@@ -75,5 +77,48 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+
+
+
+// ✅ LOGIN
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  // Basic validations
+  if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+  }
+
+  try {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+          return res.status(404).json({ error: "User not found" });
+      }
+
+      // For plain-text passwords only (not recommended)
+      if (user.password !== password) {
+          return res.status(401).json({ error: "Invalid credentials" });
+      }
+
+      // Set cookie
+      res.cookie("username", user.name, {
+          httpOnly: true,
+          sameSite: "strict",
+          secure: false, // true in production with HTTPS
+      });
+
+      res.status(200).json({ message: "Login successful" });
+
+  } catch (err) {
+      res.status(500).json({ error: "Server error", err });
+  }
+});
+
+// ✅ LOGOUT
+router.post("/logout", (req, res) => {
+  res.clearCookie("username");
+  res.status(200).json({ message: "Logout successful" });
+});
 
 module.exports = router;
