@@ -43,13 +43,13 @@ const Dropdown = () => {
                 setTasks([]);
             });
     }, [selectedUser]);
-    return (
-        <div>
-            <h2>Task Management</h2>
 
-            {/* User Selection Dropdown */}
+    return (
+        <div className='container'>
+            <h2>Task Management</h2>
+            
             <label>Select a User:</label>
-            <select onChange={(e) => setSelectedUser(e.target.value)}>
+            <select onChange={(e) => setSelectedUser(e.target.value)} className='dropdown'>
                 <option value="">-- Select User --</option>
                 {users.map((user) => (
                     <option key={user._id} value={user._id}>
@@ -57,19 +57,70 @@ const Dropdown = () => {
                     </option>
                 ))}
             </select>
-
-            {/* Display Tasks of Selected User */}
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            
+            {error && <p className='error'>{error}</p>}
             <h3>Tasks by {selectedUser ? users.find(u => u._id === selectedUser)?.name || "User" : "User"}</h3>
-            <ul>
+            <ul className='taskList'>
                 {tasks.length > 0 ? (
                     tasks.map((task) => (
-                        <li key={task._id}>{task.title} - {task.status}</li>
+                        <li key={task._id} className='taskItem'>{task.title} - {task.status}</li>
                     ))
                 ) : (
                     <p>No tasks found.</p>
                 )}
             </ul>
+
+            <style>{`
+                .container {
+                    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+                    padding: 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+                    text-align: center;
+                    color: #333;
+                    max-width: 500px;
+                    margin: auto;
+                    transition: transform 0.3s ease-in-out;
+                }
+                .container:hover {
+                    transform: scale(1.02);
+                }
+                .dropdown {
+                    padding: 10px;
+                    font-size: 16px;
+                    border-radius: 8px;
+                    border: none;
+                    background: white;
+                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s;
+                }
+                .dropdown:focus {
+                    outline: none;
+                    transform: scale(1.05);
+                }
+                .error {
+                    color: red;
+                    font-weight: bold;
+                }
+                .taskList {
+                    list-style: none;
+                    padding: 0;
+                    margin: 15px 0;
+                }
+                .taskItem {
+                    background: linear-gradient(135deg, #56ccf2, #2f80ed);
+                    padding: 10px;
+                    margin: 5px 0;
+                    border-radius: 8px;
+                    color: white;
+                    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+                    font-weight: bold;
+                    transition: transform 0.3s ease-in-out;
+                }
+                .taskItem:hover {
+                    transform: scale(1.05);
+                }
+            `}</style>
         </div>
     );
 };
